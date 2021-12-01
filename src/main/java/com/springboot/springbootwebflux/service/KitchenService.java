@@ -13,7 +13,7 @@ import java.util.Random;
 public class KitchenService {
 
     public Flux<Dish> getDishes() {
-        return Flux.<Dish> generate(sink -> sink.next(randomDish()))
+        return Flux.<Dish>generate(sink -> sink.next(randomDish()))
                 .delayElements(Duration.ofMillis(250));
     }
 
