@@ -6,12 +6,14 @@ import org.springframework.data.annotation.Id;
 
 public class User {
 
-    private @Id String id;
+    private @Id
+    String id;
     private String name;
     private String password;
     private List<String> roles;
 
-    private User() {}
+    private User() {
+    }
 
     public User(String id, String name, String password, List<String> roles) {
         this.id = id;
