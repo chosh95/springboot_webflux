@@ -4,6 +4,8 @@ import com.springboot.springbootwebflux.domain.Cart;
 import com.springboot.springbootwebflux.domain.Item;
 import com.springboot.springbootwebflux.service.InventoryService;
 
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -52,9 +54,10 @@ public class HomeController {
         return this.inventoryService.saveItem(newItem);
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseBody
-    Mono<Void> deleteItem(@PathVariable String id) {
-        return this.inventoryService.deleteItem(id);
+    @PreAuthorize("hasRole('ROLE_INVENTORY')")
+    @DeleteMapping("/delete/{id}")
+    Mono<String> deleteItem(@PathVariable String id) {
+        return this.inventoryService.deleteItem(id)
+            .thenReturn("redirect:/");
     }
 }
