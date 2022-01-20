@@ -6,7 +6,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -23,6 +22,11 @@ public class SecurityConfig {
 
     public static final String USER = "USER"; // 일반 사용자
     public static final String INVENTORY = "INVENTORY"; // 개발자
+    public static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    static String role(String auth) {
+        return "ROLE_" + auth;
+    }
 
     @Bean
     SecurityWebFilterChain customSecurityPolicy(ServerHttpSecurity http) {
@@ -46,10 +50,6 @@ public class SecurityConfig {
                 .password(passwordEncoder().encode(user.getPassword()))
                 .authorities(user.getRoles().toArray(new String[0]))
                 .build());
-    }
-
-    static String role(String auth) {
-        return "ROLE_" + auth;
     }
 
     @Bean
